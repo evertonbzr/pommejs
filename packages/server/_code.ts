@@ -63,6 +63,8 @@ const todoController = p
 
 const server = p
 	.server(app)
+	.prefix('/v2')
+	.middlewares([])
 	.plugins([
 		generateRoutesOutputPlugin({
 			homeWithLastChecksum: true,
