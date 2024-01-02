@@ -1,7 +1,6 @@
 {
-  "private": true,
-  "name": "dev-env",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "license": "MIT"
+	"name": "dev-env",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"license": "MIT"
 }

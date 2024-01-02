@@ -1,6 +1,6 @@
 {
 	"name": "@pommejs/server",
-	"version": "2.0.0",
+	"version": "1.0.0",
 	"description": "PommeJS Server is a router builder for ExpressJS, ref: https://github.com/evertonbzr/pomme-ts",
 	"license": "MIT",
 	"main": "dist/index.js",

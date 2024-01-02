@@ -5,17 +5,29 @@
 	"license": "MIT",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
-	"private": false,
-	"files": ["dist"],
+	"files": [
+		"dist"
+	],
 	"scripts": {
 		"build": "tsc",
 		"dev": "tsx --watch ./_code.ts",
 		"test": "NODE_ENV=test vitest",
 		"publish-package": "tsc && npm publish"
 	},
-	"keywords": ["typescript", "router", "express", "api", "shield"],
+	"keywords": [
+		"typescript",
+		"router",
+		"express",
+		"api",
+		"shield"
+	],
 	"author": "Everton Fernandes",
 	"peerDependencies": {
 		"@pommejs/server": "^2.0.0"
+	},
+	"devDependencies": {
+		"@types/node": "^20.10.6",
+		"ts-node": "^10.9.2",
+		"typescript": "^5.3.3"
 	}
 }

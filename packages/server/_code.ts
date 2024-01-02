@@ -1,8 +1,7 @@
 import express from 'express';
+import { z } from 'zod';
 import { getStorage, p } from './index';
 import { generateRoutesOutputPlugin } from './plugins/generateRoutesOutput';
-
-import { z } from 'zod';
 const app = express();
 
 app.use(express.json());
