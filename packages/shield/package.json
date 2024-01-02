@@ -1,0 +1,18 @@
+{
+	"name": "@pommejs/shield",
+	"version": "1.0.0",
+	"description": "PommeJS Shield is a router shield for ExpressJS",
+	"license": "MIT",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"private": false,
+	"files": ["dist"],
+	"scripts": {
+		"build": "tsc",
+		"dev": "tsx --watch ./_code.ts",
+		"test": "NODE_ENV=test vitest",
+		"publish-package": "tsc && npm publish"
+	},
+	"keywords": ["typescript", "router", "express", "api", "shield"],
+	"author": "Everton Fernandes"
+}
