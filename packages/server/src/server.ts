@@ -6,22 +6,22 @@ import { getStorage } from "./store";
 import { Controller, Plugin, ServerBuildType } from "./types";
 
 class _MakeServer {
-	private prefix: string;
+	private _prefix: string;
 	private app: Express;
 	private _controllers: Controller[];
-	private middlewares: RequestHandler[];
+	private _middlewares: RequestHandler[];
 	private _plugins: Plugin[];
 
 	constructor(app: Express) {
-		this.prefix = "/";
+		this._prefix = "/";
 		this.app = app;
 		this._controllers = [];
-		this.middlewares = [];
+		this._middlewares = [];
 		this._plugins = [];
 	}
 
-	withPrefix(prefix: string) {
-		this.prefix = prefix;
+	prefix(prefix: string) {
+		this._prefix = prefix;
 		return this;
 	}
 
@@ -35,8 +35,8 @@ class _MakeServer {
 		return this;
 	}
 
-	withMiddlewares(middlewares: RequestHandler[]) {
-		this.middlewares = middlewares;
+	middlewares(middlewares: RequestHandler[]) {
+		this._middlewares = middlewares;
 		return this;
 	}
 
@@ -55,7 +55,9 @@ class _MakeServer {
 			}));
 		});
 
-		const prefix = this.prefix === "/" ? "" : this.prefix;
+
+		const prefix = this._prefix === "/" ? "" : this._prefix;
+
 
 		for (const path of paths) {
 			getStorage().routes.push({
@@ -69,7 +71,7 @@ class _MakeServer {
 		}
 
 		for (const route of routes) {
-			this.app.use(this.prefix, ...this.middlewares, route);
+			this.app.use(this._prefix, ...this._middlewares, route);
 		}
 
 		const formatedPaths = paths.map(
@@ -88,7 +90,7 @@ class _MakeServer {
 			app: this.app,
 			controllers: this._controllers,
 			paths,
-			prefix,
+			prefix: this._prefix,
 		};
 
 		for (const plugin of this._plugins) {
