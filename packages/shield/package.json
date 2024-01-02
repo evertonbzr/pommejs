@@ -14,5 +14,8 @@
 		"publish-package": "tsc && npm publish"
 	},
 	"keywords": ["typescript", "router", "express", "api", "shield"],
-	"author": "Everton Fernandes"
+	"author": "Everton Fernandes",
+	"peerDependencies": {
+		"@pommejs/server": "^2.0.0"
+	}
 }
