@@ -1,6 +1,7 @@
 {
-  "name": "pomme-ts",
-  "version": "1.2.9",
+  "name": "@pommejs/server",
+  "version": "2.0.0",
+  "description": "PommeJS Server is a library to build routes for your API with Express.JS, ref: https://github.com/evertonbzr/pomme-ts",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
