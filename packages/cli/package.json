@@ -5,12 +5,18 @@
 	"types": "dist/index.d.ts",
 	"scripts": {
 		"build": "tsc",
-		"dev": "tsx --watch ./_code.ts",
+		"dev": "tsx ./src/bin/pomme",
 		"publish-package": "tsc && npm publish"
 	},
 	"license": "MIT",
 	"devDependencies": {
 		"@types/node": "^20.10.8",
+		"tsx": "^4.7.0",
 		"typescript": "^5.3.3"
+	},
+	"dependencies": {
+		"axios": "^1.6.5",
+		"commander": "^11.1.0",
+		"dotenv": "^16.3.1"
 	}
 }

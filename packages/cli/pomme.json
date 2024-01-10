@@ -1,0 +1,11 @@
+{
+  "input": {
+    "targetUrl": "",
+    "axios": {
+      "baseUrl": ""
+    }
+  },
+  "output": {
+    "path": "./generated"
+  }
+}
