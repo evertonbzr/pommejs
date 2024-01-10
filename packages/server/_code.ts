@@ -44,13 +44,10 @@ const v1GetTodo = p.route.get({
 	querySchema: z.object({
 		include: z.array(z.string()).optional(),
 	}),
-	async resolver(input, ctx) {
+	async resolver(input, ctx, res) {
 		const { id } = input.params;
 
-		return {
-			id,
-			title: 'Todo 2',
-		};
+		return res.send('Olá');
 	},
 });
 

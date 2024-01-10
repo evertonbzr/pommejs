@@ -9,13 +9,17 @@
 			"recommended": true,
 			"suspicious": {
 				"noExplicitAny": "off"
+			},
+			"complexity": {
+				"noBannedTypes": "off"
 			}
 		}
 	},
 	"javascript": {
 		"formatter": {
 			"indentWidth": 2,
-			"quoteStyle": "single"
+			"quoteStyle": "single",
+			"lineWidth": 70
 		}
 	}
 }

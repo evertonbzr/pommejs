@@ -1,8 +1,14 @@
-import { Request, Response, Router } from "express";
-import { AnyZodObject } from "zod";
-import { RouterBuild } from "./router-build";
-import { Field, FieldArgs, OmitFieldArgs, ParseZod, ReqMethod } from "./types";
-import { validateRequest } from "./validate-field";
+import { Request, Response } from 'express';
+import { AnyZodObject } from 'zod';
+import { RouterBuild } from './router-build';
+import {
+	Field,
+	FieldArgs,
+	OmitFieldArgs,
+	ParseZod,
+	ReqMethod,
+} from './types';
+import { validateRequest } from './validate-field';
 
 function _makeField<
 	Body extends AnyZodObject = AnyZodObject,
@@ -20,34 +26,36 @@ function _makeField<
 }: FieldArgs<Body, Path, Query>): Field {
 	const routerBuild = new RouterBuild();
 
-	let pathDefine = path ?? "/";
+	let pathDefine = path ?? '/';
 
-	pathDefine = pathDefine.startsWith("/") ? pathDefine : `/${pathDefine}`;
+	pathDefine = pathDefine.startsWith('/')
+		? pathDefine
+		: `/${pathDefine}`;
 
 	const router = routerBuild
-    .setPath(pathDefine)
-    .setMethod(reqType)
-    .setMiddlewares([
+		.setPath(pathDefine)
+		.setMethod(reqType)
+		.setMiddlewares([
       ...middlewares,
       validateRequest({
         ...(bodySchema && { body: bodySchema }),
         ...(querySchema && { query: querySchema }),
       }),
-    ])
-    .setController(
-      async (
-        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-// biome-ignore lint/complexity/noBannedTypes: <explanation>
-req: Request<any, {}, ParseZod<Body>, ParseZod<Query>>,
-        res: Response,
-      ) => {
-        const { body, params, query } = req;
+		]).setController(
+			async (
+				req: Request<any, {}, ParseZod<Body>, ParseZod<Query>>,
+				res: Response,
+			) => {
+				const { body, params, query } = req;
 
-        const response = await resolver({ body, params, query }, req);
+				const response = await resolver({ body, params, query }, req, res);
 
-        res.json(response);
-      },
-    )
+				if (typeof response.send === 'function') {
+					return response
+				}
+				return res.json(response);
+			},
+		)
     .build();
 
 	return {
@@ -72,7 +80,11 @@ export const route = {
 	>(
 		reqType: ReqMethod,
 		options: OmitFieldArgs<Body, Path, Query>,
-	) => _makeField<Body, Path, Query>({ ...options, reqType }),
+	) =>
+		_makeField<Body, Path, Query>({
+			...options,
+			reqType,
+		}),
 
 	get: <
 		Body extends AnyZodObject = AnyZodObject,
@@ -80,7 +92,7 @@ export const route = {
 		Query extends AnyZodObject = AnyZodObject,
 	>(
 		options: OmitFieldArgs<Body, Path, Query>,
-	) => route.withMethod<Body, Path, Query>("GET", options),
+	) => route.withMethod<Body, Path, Query>('GET', options),
 
 	post: <
 		Body extends AnyZodObject = AnyZodObject,
@@ -88,7 +100,7 @@ export const route = {
 		Query extends AnyZodObject = AnyZodObject,
 	>(
 		options: OmitFieldArgs<Body, Path, Query>,
-	) => route.withMethod<Body, Path, Query>("POST", options),
+	) => route.withMethod<Body, Path, Query>('POST', options),
 
 	put: <
 		Body extends AnyZodObject = AnyZodObject,
@@ -96,7 +108,7 @@ export const route = {
 		Query extends AnyZodObject = AnyZodObject,
 	>(
 		options: OmitFieldArgs<Body, Path, Query>,
-	) => route.withMethod<Body, Path, Query>("PUT", options),
+	) => route.withMethod<Body, Path, Query>('PUT', options),
 
 	delete: <
 		Body extends AnyZodObject = AnyZodObject,
@@ -104,7 +116,7 @@ export const route = {
 		Query extends AnyZodObject = AnyZodObject,
 	>(
 		options: OmitFieldArgs<Body, Path, Query>,
-	) => route.withMethod<Body, Path, Query>("DELETE", options),
+	) => route.withMethod<Body, Path, Query>('DELETE', options),
 
 	patch: <
 		Body extends AnyZodObject = AnyZodObject,
@@ -112,12 +124,5 @@ export const route = {
 		Query extends AnyZodObject = AnyZodObject,
 	>(
 		options: OmitFieldArgs<Body, Path, Query>,
-	) => route.withMethod<Body, Path, Query>("PATCH", options),
+	) => route.withMethod<Body, Path, Query>('PATCH', options),
 };
-
-route.get({
-	key: "listTodos",
-	async resolver(input, ctx) {
-		return {};
-	},
-});

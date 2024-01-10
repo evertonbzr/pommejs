@@ -1,5 +1,11 @@
-import { Express, Request, RequestHandler, Response, Router } from "express";
-import { ZodTypeAny, z } from "zod";
+import {
+	Express,
+	Request,
+	RequestHandler,
+	Response,
+	Router,
+} from 'express';
+import { ZodTypeAny, z } from 'zod';
 
 export type ParseZod<ZodItem extends ZodTypeAny> = z.infer<ZodItem>;
 
@@ -13,13 +19,14 @@ export type Field = {
 	querySchema?: ZodTypeAny;
 };
 
-type ParseRouteParams<Rte> = Rte extends `${string}:${infer P}/${infer Rest}`
-	? P | ParseRouteParams<`/${Rest}`>
-	: Rte extends `${string}:${infer P}`
-	  ? P
-	  : never;
+type ParseRouteParams<Rte> =
+	Rte extends `${string}:${infer P}/${infer Rest}`
+		? P | ParseRouteParams<`/${Rest}`>
+		: Rte extends `${string}:${infer P}`
+		  ? P
+		  : never;
 
-export type ReqMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
+export type ReqMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 
 export interface FieldArgs<
 	BodySchema extends ZodTypeAny = ZodTypeAny,
@@ -39,6 +46,7 @@ export interface FieldArgs<
 			query: ParseZod<QuerySchema>;
 		},
 		ctx: Request,
+		res: Response,
 	) => Promise<any>;
 	middlewares?: RequestHandler[];
 }
@@ -47,7 +55,7 @@ export type OmitFieldArgs<
 	BodySchema extends ZodTypeAny = ZodTypeAny,
 	Path extends string = string,
 	QuerySchema extends ZodTypeAny = ZodTypeAny,
-> = Omit<FieldArgs<BodySchema, Path, QuerySchema>, "reqType">;
+> = Omit<FieldArgs<BodySchema, Path, QuerySchema>, 'reqType'>;
 
 export type Path = {
 	key: string;
