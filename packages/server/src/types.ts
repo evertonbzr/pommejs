@@ -6,6 +6,8 @@ import {
 	Router,
 } from 'express';
 import { ZodTypeAny, z } from 'zod';
+import { MetadataController } from './metadata/metadata-controller';
+import { MetadataRoute } from './metadata/metadata-route';
 
 export type ParseZod<ZodItem extends ZodTypeAny> = z.infer<ZodItem>;
 
@@ -17,6 +19,7 @@ export type Field = {
 	reqType: ReqMethod;
 	bodySchema?: ZodTypeAny;
 	querySchema?: ZodTypeAny;
+	metadata?: MetadataRoute;
 };
 
 type ParseRouteParams<Rte> =
@@ -49,6 +52,7 @@ export interface FieldArgs<
 		res: Response,
 	) => Promise<any>;
 	middlewares?: RequestHandler[];
+	metadata?: MetadataRoute;
 }
 
 export type OmitFieldArgs<
@@ -64,6 +68,7 @@ export type Path = {
 	controllerPath?: string;
 	bodySchema?: string;
 	querySchema?: string;
+	metadata?: MetadataRoute;
 };
 
 export type RouteDefinition = {
@@ -72,6 +77,13 @@ export type RouteDefinition = {
 	key: string;
 	bodySchema?: string;
 	querySchema?: string;
+	metadata?: MetadataRoute;
+};
+
+export type ControllerDefinition = {
+	key: string;
+	routes: RouteDefinition[];
+	metadata?: MetadataController;
 };
 
 export type Controller = {
@@ -79,6 +91,7 @@ export type Controller = {
 	route: Router;
 	paths: Path[];
 	fields: Field[];
+	metadata?: MetadataController;
 };
 
 export type MakeServerArgs = {

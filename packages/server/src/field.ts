@@ -23,6 +23,7 @@ function _makeField<
 	key,
 	noImportMiddleware = false,
 	middlewares = [],
+	metadata = {},
 }: FieldArgs<Body, Path, Query>): Field {
 	const routerBuild = new RouterBuild();
 
@@ -66,6 +67,7 @@ function _makeField<
 		key,
 		bodySchema,
 		querySchema,
+		metadata,
 	};
 }
 

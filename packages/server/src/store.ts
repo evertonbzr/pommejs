@@ -1,7 +1,8 @@
-import { RouteDefinition } from "./types";
+import { ControllerDefinition, RouteDefinition } from './types';
 
 class StorageEngine {
 	public routes: RouteDefinition[] = [];
+	public controllers: ControllerDefinition[] = [];
 }
 
 let storage: StorageEngine;

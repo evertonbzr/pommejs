@@ -1,16 +1,18 @@
-import { RequestHandler, Router } from "express";
-import zodToJsonSchema from "zod-to-json-schema";
-import { Field } from "./types";
+import { RequestHandler, Router } from 'express';
+import zodToJsonSchema from 'zod-to-json-schema';
+import { MetadataController } from './metadata/metadata-controller';
+import { Field } from './types';
 
 class Controller {
 	private path: string;
 	private fields: Field[];
 	private middleware: RequestHandler[];
 	private router: Router;
+	private metadataController: MetadataController;
 
-	constructor(path = "/") {
+	constructor(path = '/') {
 		this.path = path;
-		this.path = path.startsWith("/") ? path : `/${path}`;
+		this.path = path.startsWith('/') ? path : `/${path}`;
 		this.fields = [];
 		this.middleware = [];
 		this.router = Router();
@@ -26,9 +28,14 @@ class Controller {
 		return this;
 	}
 
+	metadata(metadata: MetadataController) {
+		this.metadataController = metadata;
+		return this;
+	}
+
 	build() {
 		if (!this.path) {
-			throw new Error("ControllerBuild requires path.");
+			throw new Error('ControllerBuild requires path.');
 		}
 
 		const fieldsSorted = this.fields.sort((a) => {
@@ -54,6 +61,7 @@ class Controller {
 				...(querySchemaJSON && {
 					querySchema: JSON.stringify(querySchemaJSON),
 				}),
+				metadata: field.metadata,
 			};
 		});
 
@@ -70,6 +78,7 @@ class Controller {
 			route: this.router,
 			paths: fieldsPaths,
 			fields: fieldsSorted,
+			metadata: this.metadataController,
 		};
 	}
 

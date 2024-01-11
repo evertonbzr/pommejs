@@ -1,9 +1,9 @@
-import { Express, RequestHandler } from "express";
-import { bold, green } from "kleur/colors";
-import { PommeError } from "./errors";
-import { error, info } from "./logger";
-import { getStorage } from "./store";
-import { Controller, Plugin, ServerBuildType } from "./types";
+import { Express, RequestHandler } from 'express';
+import { bold, green } from 'kleur/colors';
+import { PommeError } from './errors';
+import { error, info } from './logger';
+import { getStorage } from './store';
+import { Controller, Plugin, ServerBuildType } from './types';
 
 class _MakeServer {
 	private _prefix: string;
@@ -13,7 +13,7 @@ class _MakeServer {
 	private _plugins: Plugin[];
 
 	constructor(app: Express) {
-		this._prefix = "/";
+		this._prefix = '/';
 		this.app = app;
 		this._controllers = [];
 		this._middlewares = [];
@@ -42,22 +42,36 @@ class _MakeServer {
 
 	build(): ServerBuildType {
 		if (!this.app) {
-			error("RouterBuild requires app.");
-			throw new Error("RouterBuild requires app.");
+			error('RouterBuild requires app.');
+			throw new Error('RouterBuild requires app.');
 		}
 
-		const routes = this._controllers.map((controller) => controller.route);
+		const routes = this._controllers.map(
+			(controller) => controller.route,
+		);
 		const paths = this._controllers.flatMap((controller) => {
-			return controller.paths.map((path) => ({
+			const mappedPath = controller.paths.map((path) => ({
 				...path,
 				route: `${controller.key}${path.route}`,
 				controllerPath: controller.key,
 			}));
+
+			getStorage().controllers.push({
+				key: controller.key,
+				metadata: controller.metadata,
+				routes: controller.paths.map((path) => ({
+					key: path.key,
+					path: path.route,
+					method: path.req as any,
+					...(path.bodySchema && { bodySchema: path.bodySchema }),
+					...(path.querySchema && { querySchema: path.querySchema }),
+					metadata: path.metadata,
+				})),
+			});
+			return mappedPath;
 		});
 
-
-		const prefix = this._prefix === "/" ? "" : this._prefix;
-
+		const prefix = this._prefix === '/' ? '' : this._prefix;
 
 		for (const path of paths) {
 			getStorage().routes.push({
@@ -67,7 +81,10 @@ class _MakeServer {
 				...(path.bodySchema && { bodySchema: path.bodySchema }),
 				...(path.querySchema && { querySchema: path.querySchema }),
 			});
-			info(`${bold(path.key)} ${green(path.req)} ${prefix}${path.route}`);
+
+			info(
+				`${bold(path.key)} ${green(path.req)} ${prefix}${path.route}`,
+			);
 		}
 
 		for (const route of routes) {
@@ -83,7 +100,9 @@ class _MakeServer {
 		);
 
 		if (pathsDuplicate.length) {
-			throw new Error(`Duplicate routes found: ${pathsDuplicate.join(", ")}`);
+			throw new Error(
+				`Duplicate routes found: ${pathsDuplicate.join(', ')}`,
+			);
 		}
 
 		const server = {

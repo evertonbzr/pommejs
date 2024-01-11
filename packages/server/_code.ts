@@ -41,6 +41,9 @@ const v1CreateTodo = p.route.post({
 const v1GetTodo = p.route.get({
 	key: 'getTodo',
 	path: '/:id',
+	metadata: {
+		description: 'Get todo',
+	},
 	querySchema: z.object({
 		include: z.array(z.string()).optional(),
 	}),
@@ -55,6 +58,9 @@ const todoController = p
 	.controller('todo')
 	.middlewares([])
 	.routes([v1ListTodos, v1GetTodo, v1CreateTodo])
+	.metadata({
+		description: 'Todo controller',
+	})
 	.build();
 
 const server = p
@@ -70,6 +76,8 @@ const server = p
 	])
 	.controllers([todoController])
 	.build();
+
+console.log(getStorage().controllers[0]);
 
 app.listen(3000, () => {
 	console.log('Server started on port 3000');
