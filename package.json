@@ -2,5 +2,7 @@
 	"name": "dev-env",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
-	"license": "MIT"
+	"license": "MIT",
+	"private": true,
+	"workspaces": ["packages/*"]
 }

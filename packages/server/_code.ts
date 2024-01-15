@@ -1,6 +1,6 @@
 import express from 'express';
 import { z } from 'zod';
-import { getStorage, p } from './index';
+import { getStorage, p } from './dist/index';
 import { generateRoutesOutputPlugin } from './plugins/generateRoutesOutput';
 const app = express();
 
@@ -58,9 +58,6 @@ const todoController = p
 	.controller('todo')
 	.middlewares([])
 	.routes([v1ListTodos, v1GetTodo, v1CreateTodo])
-	.metadata({
-		description: 'Todo controller',
-	})
 	.build();
 
 const server = p
