@@ -1,6 +1,6 @@
 import express from 'express';
 import { z } from 'zod';
-import { getStorage, p } from './dist/index';
+import { Controller, getStorage, p } from './dist/index';
 import { generateRoutesOutputPlugin } from './plugins/generateRoutesOutput';
 const app = express();
 
@@ -38,15 +38,15 @@ const v1CreateTodo = p.route.post({
 	},
 });
 
-const v1GetTodo = p.route.get({
-	key: 'getTodo',
+const v1UpdateTodo = p.route.put({
+	key: 'updateTodo',
 	path: '/:id',
-	metadata: {
-		description: 'Get todo',
-	},
+	bodySchema: z.object({}),
 	querySchema: z.object({
 		include: z.array(z.string()).optional(),
 	}),
+	middlewares: [],
+	noImportMiddleware: false,
 	async resolver(input, ctx, res) {
 		const { id } = input.params;
 
@@ -57,7 +57,7 @@ const v1GetTodo = p.route.get({
 const todoController = p
 	.controller('todo')
 	.middlewares([])
-	.routes([v1ListTodos, v1GetTodo, v1CreateTodo])
+	.routes([v1CreateTodo])
 	.build();
 
 const server = p
