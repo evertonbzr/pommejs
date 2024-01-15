@@ -92,7 +92,7 @@ With `@pommejs/server` you can create a server with controllers, routes, middlew
 
 To generate route specifications, you can use the `@pommejs/server/generateRoutesOutputPlugin` plugin.
 
-[Template]("https://github.com/evertonbzr/module-template") using PommeJS.
+[Template](https://github.com/evertonbzr/module-template) using PommeJS.
 
 License MIT
 
