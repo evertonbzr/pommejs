@@ -3,6 +3,8 @@
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
 	"license": "MIT",
-	"private": true,
-	"workspaces": ["packages/*"]
+	"private": false,
+	"workspaces": [
+		"packages/*"
+	]
 }
